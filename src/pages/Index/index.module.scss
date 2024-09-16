@@ -1,0 +1,54 @@
+
+.content {
+  padding: 10px;
+  border: 0.1px solid #ccc;
+}
+
+.boxs {
+  padding: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; // 改为左对齐
+  a {
+    text-decoration: none; // 取消下划线
+  }
+  .box {
+    width: calc(33.333% - 20px); // 减去margin的宽度
+    background-color: #ffffff; // 背景
+    border: 1px solid #a8edea; // 边框
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px; // 添加外边距
+    text-align: center; // 文字居中
+    font-weight: bold;
+    font-size: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease; // 更快的过渡效果
+    cursor: pointer; // 鼠标指针变成手形
+
+    // 添加初始的3D效果
+    transform-style: preserve-3d;
+
+    &:hover {
+      transform: translateY(-10px); // 在悬停时向上移动
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      padding: 20px;
+
+    }
+
+
+  }
+}
+
+
+// 媒体查询，针对小屏幕设备（如手机）
+@media (max-width: 768px) {
+  .boxs {
+    flex-direction: column; // 将flex容器的方向改为列，这样每个子元素都会单独占一行
+    padding: 10px;
+    .box {
+      width: 100%; // 让每个盒子占满整行
+      margin: 11px 0; // 可能需要调整margin以适应新的布局
+    }
+  }
+}

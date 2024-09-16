@@ -1,0 +1,47 @@
+.content {
+  padding: 10px;
+  border: 0.1px solid #ccc;
+}
+
+.boxs {
+  padding: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.boxs a {
+  text-decoration: none;
+}
+.boxs .box {
+  width: calc(33.333% - 20px);
+  background-color: #ffffff;
+  border: 1px solid #a8edea;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  transform-style: preserve-3d;
+}
+.boxs .box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .boxs {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .boxs .box {
+    width: 100%;
+    margin: 11px 0;
+  }
+}
+
+/*# sourceMappingURL=index.module.css.map */

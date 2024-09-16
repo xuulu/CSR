@@ -1,0 +1,22 @@
+
+
+// 重置所有元素的默认样式
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;        // 清除默认边距
+  padding: 0;
+  border: none;
+  outline: none;
+  list-style: none;
+  position: relative;
+}
+
+
+
+html, body,#root {
+  height: 100%;   // 设置 html 和 body 高度为 100%
+  font-family: "MicrosoftYaHei", "SimHei", sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
