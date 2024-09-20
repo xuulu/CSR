@@ -1,27 +1,49 @@
-import type {typeFriendLink} from '@/types/apis/typeApiList';
+import type {typeFriendLink} from '@/types/typeApiList';
 import type {FormProps} from 'antd';
 import {Button, Form, Input, message} from 'antd';
-import postSubmitFriendLink from "@/components/apis/postSubmitFriendLink.ts";
+import postSubmitFriendLink from "@/apis/postSubmitFriendLink.ts";
 
-
-// 提交表单的函数
-const onFinish = async (values: typeFriendLink) => {
-
-    if (await postSubmitFriendLink(values)) {
-        message.success('提交成功，请等待管理员审核且注意邮箱！');
-    } else {
-        message.error('提交失败,请勿重复提交或联系管理员！');
-    }
-};
-
-// 表单验证
-const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
-    console.log('表单提交失败:', errorInfo);
-};
 
 function SubmitFriendLink() {
+    const [form] = Form.useForm();
+
+    // 提交表单的函数
+    const onFinish = async (values: typeFriendLink) => {
+
+        const result = await postSubmitFriendLink(values);
+
+        if (result.success) {
+            message.success('提交成功，请等待管理员审核且注意邮箱！');
+        } else {
+            message.error('提交失败，请勿重复提交或联系管理员！');
+            const {errors} = result;
+            // 解析错误信息并设置表单字段错误
+            const formattedErrors = Object.keys(errors).map((field) => ({
+                name: field,
+                errors: errors[field],
+            }));
+
+            form.setFields(formattedErrors);
+        }
+
+        // if (await postSubmitFriendLink(values)) {
+        //     message.success('提交成功，请等待管理员审核且注意邮箱！');
+        // } else {
+        //     message.error('提交失败,请勿重复提交或联系管理员！');
+        // }
+    };
+
+    // 表单验证
+    const onFinishFailed: FormProps['onFinishFailed'] = ({values, errorFields, outOfDate}) => {
+        console.log('表单提交失败:', values);
+        console.log('表单提交失败:', errorFields);
+        console.log('表单提交失败:', outOfDate);
+    };
+
+
     return (
         <Form
+            form={form}
             name="basic"
             labelCol={{span: 8}}
             wrapperCol={{span: 16}}
@@ -88,6 +110,7 @@ function SubmitFriendLink() {
                 </Button>
             </Form.Item>
         </Form>
+
     );
 
 }

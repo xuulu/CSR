@@ -1,18 +1,19 @@
-import React, {useEffect, useState} from "react";
-import {Affix, Button, Dropdown, Layout, Menu} from "antd";
+import React, {useState} from "react";
+import {Button, Dropdown, Layout, Menu} from "antd";
 import type {MenuProps} from 'antd'
 import {MenuUnfoldOutlined} from '@ant-design/icons'
 import {Link, useNavigate} from "react-router-dom";
+import useIsMobile from "@/hooks/userIsMobile"
 import styles from '../index.layout.module.scss'
 
+
 type MenuItem = Required<MenuProps>['items'][number];
-
-
 // 菜单项定义
 const items: MenuItem[] = [
-    {key: "index", label: <Link to="/index">首页</Link>},
-    {key: "friendshipLink", label: <Link to="/friendshipLink">友情链接</Link>},
-    {key: "disclaimer", label: <Link to="/disclaimer">免责声明</Link>},
+    {key: "/index", label: '首页'},
+    {key: "/index/friendshipLink", label: '友情链接'},
+    {key: "/index/web-api", label: '前端接口'},
+    {key: "/index/disclaimer", label: '网站声明'},
     {
         key: "external",
         label: "外部链接",
@@ -31,27 +32,34 @@ const items: MenuItem[] = [
     }
 ];
 
-interface Props {
-    isMobile: boolean;
-}
 
-const Content: React.FC<Props> = ({isMobile}) => {
+
+const Header: React.FC = () => {
+    const navigate = useNavigate()
+    const isMobile = useIsMobile()
     const [current, setCurrent] = useState('index');
+
 
     const onClick: MenuProps['onClick'] = (e) => {
         setCurrent(e.key);
+        navigate(e.key)
+        if (!e.key.startsWith('external')) {
+            navigate(e.key);
+        }
     };
+
+
 
     return (
         <Layout.Header className={styles.header}>
             <Link to={'/index'} className={styles.logo}>简心API</Link>
-
             {isMobile ? (
                 <Dropdown menu={{items, onClick}} placement="bottomRight">
                     <Button type={'primary'}><MenuUnfoldOutlined/></Button>
                 </Dropdown>
             ) : (
                 <Menu
+                    theme={'light'}
                     mode="horizontal"
                     onClick={onClick}
                     selectedKeys={[current]}
@@ -63,4 +71,4 @@ const Content: React.FC<Props> = ({isMobile}) => {
     );
 };
 
-export default Content;
+export default Header;

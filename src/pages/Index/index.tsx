@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react"
 import {typeApiList} from "@/types/typeApiList.ts"
 import {useRequest} from "ahooks"
-import {Empty, Skeleton,Flex} from "antd";
+import {Empty, Skeleton, Flex, Typography} from "antd";
 // 接口
 import getList from '@/apis/getList'
 import getSearch from '@/apis/getSearch'
@@ -14,7 +14,6 @@ import Pagination from "./components/Pagination"        // 分页器
 import styles from './index.module.scss'
 
 
-
 export default function Home() {
 
     const [page, setPage] = useState(1) // 设置页面
@@ -22,8 +21,10 @@ export default function Home() {
 
 
     // 获取请求数据
-    const {loading,error,run} = useRequest(() => getList(page), {
+    const {loading, error, run} = useRequest(() => getList(page), {
         manual: true,
+        cacheKey: `home-index`,
+        cacheTime: 1000 * 60 * 60 * 24,     // 缓存1天
         onSuccess: (response) => {
             setData(response)
         },
@@ -46,18 +47,17 @@ export default function Home() {
         })
     };
 
-    if (loading || !data) return <Skeleton />
-    if (error) return <Empty description="获取数据失败！！" />
-    console.log(error)
+    if (loading || !data) return <Skeleton/>
+    if (error) return <Empty description="获取数据失败！！"/>
 
     return (
         <>
-
-
-            <Flex wrap gap="small" justify='center'>
-                <p>简心API</p>
+            <Flex vertical wrap justify={'center'} align={'center'}>
+                <Typography.Title level={3}>简心API</Typography.Title>
+                <Typography.Text disabled>一个基于最新技术栈的接口平台，前端使用React+Antd等构建，后端使用Django+drf提供接口服务。</Typography.Text>
             </Flex>
 
+            <br/>
 
             <div className={styles.content}>
                 {/*搜索框*/}
@@ -67,7 +67,7 @@ export default function Home() {
                     {data ? (
                         <ItemList items={data.results}/>
                     ) : (
-                        <Skeleton />
+                        <Skeleton/>
                     )}
                 </div>
                 {/*分页器*/}

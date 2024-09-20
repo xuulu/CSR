@@ -2,18 +2,23 @@
 import {http} from '@/utils';
 import {typeFriendLink} from '@/types/typeApiList.ts'
 
+// function postSubmitFriendLink(data: typeFriendLink) {
+//     return http.post(`/friend-links/`, data)
+// }
+const postSubmitFriendLink = async (data: typeFriendLink) => {
 
-function postSubmitFriendLink(data: typeFriendLink): Promise<boolean> {
-    return http.post(`/friend-links/`, data)
-        .then(response => {
-            console.log('请求响应的数据:', response);
-            return true
-        })
-        .catch(error => {
-            // 处理请求过程中的错误
-            console.error('请求出错:', error);
-            return false;
-        });
-}
+    try {
+        await http.post(`/friend-links/`, data);
+        return { success: true };
+    } catch (error: any) {
+        console.error('Error:', error.response); // 这行会打印原始错误信息
+        console.error('Error:', error);
+        if (error.response && error.response.status === 400) {
+            return { success: false, errors: error.response.data.errors };
+        }
+        throw error;
+    }
+};
+
 
 export default postSubmitFriendLink;

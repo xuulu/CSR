@@ -1,8 +1,4 @@
 @charset "UTF-8";
-.layout {
-  background-color: #ffffff;
-}
-
 .header {
   display: flex;
   height: 64px;
@@ -30,7 +26,6 @@
 
 .footer {
   height: 20px;
-  color: #000000;
   padding: 20px;
   text-align: center;
   width: 100%;

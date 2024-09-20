@@ -1,9 +1,9 @@
-import { typeList } from "@/types/typeApiList.ts";
+import { typeList,typeFriendLink } from "@/types/typeApiList.ts";
 import { Link } from "react-router-dom";
 import styles from '@/pages/index/index.module.scss';
 
 interface ItemListProps {
-    items: typeList[];
+    items: (typeList | typeFriendLink)[]
 }
 
 const ItemList = ({ items }: ItemListProps) => {

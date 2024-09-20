@@ -1,7 +1,4 @@
 
-.layout {
-  background-color: #ffffff;
-}
 
 .header {
   display: flex; // 使用flex布局
@@ -35,7 +32,7 @@
 
 .footer {
   height: 20px;
-  color: #000000; // 设置文本颜色
+  //color: #000000; // 设置文本颜色
   padding: 20px; // 设置内边距
   text-align: center; // 设置文本居中对齐
   width: 100%; // 使footer宽度为100%

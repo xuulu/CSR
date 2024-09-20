@@ -12,8 +12,8 @@ const Doc: React.FC = () => {
     const {data, error, run} = useRequest(
         () => queryApi(id as string),
         {
-            // cacheKey: `doc-${id}`,
-            // cacheTime: 1000 * 60 * 60 * 24,     // 缓存1天
+            cacheKey: `doc-${id}`,
+            cacheTime: 1000 * 60 * 60 * 24,     // 缓存1天
             manual: true,                       // 设置为手动触发
         }
     )
@@ -77,11 +77,10 @@ const Doc: React.FC = () => {
         return initialSource
     }
 
-    console.log('源始数据', source())
     return (
         <>
             <Helmet>
-                <title>简心API - 接口文档 - {data.name}</title>
+                <title>接口文档 - {data.name}</title>
             </Helmet>
 
             <Descriptions

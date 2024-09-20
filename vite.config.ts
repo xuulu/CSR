@@ -1,57 +1,60 @@
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import {join} from 'path'
+import cdn from 'vite-plugin-cdn-import'        // 从 CDN 加载 modules 的 vite 插件
 
-import viteCompression from 'vite-plugin-compression';      //导入Vite的压缩插件
-import dynamicImport from 'vite-plugin-dynamic-import';     //导入Vite的动态导入插件
-import { visualizer } from 'rollup-plugin-visualizer';      //导入Rollup的可视化分析插件
+
 
 export default defineConfig({
     plugins: [
         react(),
-        // 启用gzip压缩
-        viteCompression({
-            algorithm:'gzip',
-            ext:'.gz'
-        }),
-        // 启用代码分割和动态导入
-        dynamicImport(),
-        // 可视化分析插件
-        visualizer({
-            // 生成的分析报告的文件名，默认为'stats.html'
-            filename: 'stats.html',
-            // 是否在生成报告后自动打开浏览器，默认为false
-            open: true,
-            // 是否显示 gzip 压缩后的文件大小，默认为 false
-            gzipSize: true,
-            // 是否显示 brotli 压缩后的文件大小，默认为 false
-            brotliSize: true,
-            // 是否开启调试模式，默认为 false
-            emitFile: true,
-        }),
-
+        cdn({
+            enableInDevMode: true,
+            modules: [
+                {
+                    name: 'react',
+                    var: 'React',
+                    path: 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/react/18.2.0/umd/react.development.min.js'
+                },
+                {
+                    name: 'react-dom',
+                    var: 'ReactDOM',
+                    path: 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-dom/18.2.0/umd/react-dom.development.min.js'
+                },
+                {
+                    name: 'axios',
+                    var: 'axios',
+                    path: 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.min.js'
+                },
+            ]
+        })
     ],
     resolve: {
         alias: {
             '@': join(__dirname, 'src')
-        }
+        },
     },
     server: {
         proxy: {
             '/api': {
-                target: "https://api.qvqa.cn", //'http://localhost:8000/',
+                target: 'http://localhost:8000/',       //"https://api.qvqa.cn",
                 changeOrigin: true,
             }
         }
     },
     build: {
-        cssCodeSplit: true,
+        // minify: false,
         minify: 'terser',
+        cssCodeSplit: true,
         rollupOptions: {
-            // 将react和react-dom等标记为外部依赖(CDN)，不打包进输出文件
-            external: ['react','react-dom','react-redux','react-redux-dom','axios'],
+            external: ['react', 'react-dom','axios'],
+            // 分割打包文件
+            output: {
+                chunkFileNames: 'assets/js/[name]-[hash].js',
+                entryFileNames: 'assets/js/[name]-[hash].js',
+                assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+            },
         },
 
     }
-
 })
